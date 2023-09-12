@@ -11,9 +11,16 @@ const createPerson = async (person) => {
     const { name, email, password } = person;
     const dataHora = new Date(Date.now()).toUTCString();
 
-    const [createdPerson] = await c.execute('INSERT INTO persons(name, email, password, created_at) VALUES (?,?,?,?)', [name, email, password, dataHora]);
+    const [checkEmail] = await c.execute('SELECT COUNT(*) AS count FROM persons WHERE email = ?', [email]);
 
-    return { insertId: createdPerson.insertId };
+    if (checkEmail[0].count === 0) {
+        const [createdPerson] = await c.execute('INSERT INTO persons(name, email, password, created_at) VALUES (?,?,?,?)', [name, email, password, dataHora]);
+
+        return { insertId: createdPerson.insertId };
+    } else
+    
+    return checkEmail;
+
 };
 
 const deletePerson = async (id) => {
