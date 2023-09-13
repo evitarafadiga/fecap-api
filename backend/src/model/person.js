@@ -19,8 +19,22 @@ const createPerson = async (person) => {
         return { insertId: createdPerson.insertId };
     } else
     
-    return checkEmail;
+    return null;
 
+};
+
+const login = async (person) => {
+
+    const { email, password } = person;
+
+    const [checkUser] = await c.execute('SELECT COUNT(*) AS count FROM persons WHERE email = ? AND password = ?', [email, password]);
+
+    if (checkUser[0].count <= 0) {
+        
+        return null;
+    } else
+
+    return checkUser;
 };
 
 const deletePerson = async (id) => {
@@ -42,4 +56,5 @@ module.exports = {
     createPerson,
     deletePerson,
     updatePerson,
+    login,
 };

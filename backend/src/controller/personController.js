@@ -10,6 +10,11 @@ const createPerson = async (req, res) => {
     return res.status(201).json(createdPerson);
 };
 
+const login = async (req, res) => {
+    const logged  = await person.login(req.body);
+    return res.status(200).json((logged ? { message: "Usuário logado!"} : { message: "Erro de login!"}));
+};
+
 const deletePerson = async (req, res) => {
     const { id } = req.params;
 
@@ -29,4 +34,5 @@ module.exports = {
     createPerson,
     deletePerson,
     updatePerson,
+    login,
 };
